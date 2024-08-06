@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login to RoboVM</title>
+    <title>Register on RoboVM</title>
 </head>
 <body>
     <form action="" method="POST">
+        <input type="text" name="name" placeholder="Your Name:">
         <input type="text" name="username" placeholder="Username:">
         <input type="password" name="password" placeholder="Password:">
+        <input type="password" name="cnfpassword" placeholder="Confirm Password:">
         <input type="submit"><br>
-        <% if (messages.error) { %>
-            <p><%= messages.error %></p>
+        <% if (error) { %>
+            <p><%= error %></p>
         <% } %>
-        <a href="/register">Register here</a>
+        <a href="/login">Login here</a>
     </form>
 </body>
 </html>

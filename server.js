@@ -11,6 +11,7 @@ const express = require('express'),
     loginRouter = require('./routers/loginRouter'),
     browserRouter = require('./routers/browserRouter'),
     proxyRouter = require('./routers/proxyRouter'),
+    regRouter = require('./routers/regRouter'),
     {checkCmd} = require('./utils/bash'),
     {ensureAuthenticated, forwardAuthenticated} = require('./utils/authenticate')
     passportInit = require('./utils/passport-config'),
@@ -47,6 +48,7 @@ app.post('/getuser', async (req, res) => {
     return res.end(req.user.username)
 })
 app.use('/login', forwardAuthenticated, loginRouter)
+app.use('/register', forwardAuthenticated, regRouter)
 app.use('/browser', ensureAuthenticated, browserRouter)
 app.use('/enableAndConfigureProxy', ensureAuthenticated, proxyRouter)
 

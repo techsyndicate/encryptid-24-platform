@@ -4,8 +4,7 @@ const reqString = { type: String, required: true };
 const nonReqString = { type: String, required: false };
 
 const userSchema = new Schema({
-    fname: reqString,
-    lname: reqString,
+    name: reqString,
     username: reqString,
     password: reqString,
     proxy: {
