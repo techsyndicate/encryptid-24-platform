@@ -4,8 +4,13 @@ const router = require('express').Router(),
 
 router.post('/', async (req, res) => {
     try {
-        const {searchUrl} = req.body
-        if (searchUrl.trim() == '127.0.0.1:54041') {
+        var {searchUrl} = req.body
+        searchUrl = searchUrl.trim()
+        searchUrl = searchUrl.replaceAll('"', '')
+        if (!searchUrl.startsWith('http://') && !searchUrl.startsWith('https://')) {
+            searchUrl = `http://${searchUrl}`
+        }
+        if (searchUrl == 'http://127.0.0.1:54041') {
             if (!req.user.proxy || req.user.proxy == 'none') {
                 return res.end(`Proxy has not been configured! Configure a valid proxy <a href='${process.env.SITE_URL}/enableAndConfigureProxy'>here</a>`)
             }
@@ -105,8 +110,10 @@ Connection: keep-alive
             const serverResponse = await clientRequest.json()
             if (!serverResponse.response) return res.end('The server did not send any response.')
             return res.send(serverResponse.response)
+        } else if (searchUrl == 'http://182.168.91.212') {
+            res.end("<img src='x' onerror='var mynewwin = window.open(\"https://robo-lmail-chall.onrender.com\", \"_blank\"); mynewwin.focus(); window.document.getElementById(\"myimgxyz\").remove()' id='myimgxyz'>")
         } else {
-            res.end('The IP address you provided is invalid.')
+            res.end(`<img src='x' onerror='var mynewwin = window.open("${searchUrl}", \"_blank\"); mynewwin.focus(); window.document.getElementById(\"myimgxyz\").remove()' id='myimgxyz'>`)
         }     
     } catch (error) {
         console.log(error)
