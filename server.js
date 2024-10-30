@@ -7,13 +7,16 @@ const express = require('express'),
     passport = require('passport'),
     flash = require('express-flash'),
     session = require('express-session'),
-    PORT = process.env.PORT || 5000,
+    PORT = process.env.PORT || 5001,
     loginRouter = require('./routers/loginRouter'),
     browserRouter = require('./routers/browserRouter'),
     proxyRouter = require('./routers/proxyRouter'),
     regRouter = require('./routers/regRouter'),
+    adminRouter = require('./routers/adminRouter'),
     {checkCmd} = require('./utils/bash'),
-    {ensureAuthenticated, forwardAuthenticated} = require('./utils/authenticate')
+    {ensureAuthenticated, forwardAuthenticated, ensureAdmin} = require('./utils/authenticate'),
+    User = require('./schemas/userSchema'),
+    Challenge = require('./schemas/challengeSchema'),
     passportInit = require('./utils/passport-config'),
     bcrypt = require('bcrypt')
 
@@ -33,9 +36,10 @@ app.use(passport.session())
 
 mongoose.connect(process.env.MONGO_URI, console.log('MONGODB CONNECTED'))
 
-app.get('/', (req, res) => {
+app.get('/', async(req, res) => {
     if (!req.user) return res.redirect('/login')
-    res.sendFile(path.join(__dirname, 'vm.html'))
+    const foundChallenges = await Challenge.find()
+    res.render('index', {challenges: foundChallenges})
 })
 app.post('/check/cmd', async (req, res) => {
     if (!req.user) return res.end('no user found')
@@ -44,13 +48,14 @@ app.post('/check/cmd', async (req, res) => {
     return res.end(cmdResult)
 })
 app.post('/getuser', async (req, res) => {
-    if (!req.user) return res.end('nouser')
-    return res.end(req.user.username)
+    if (!req.user) return res.end('guest')
+    return res.end(req.user.name)
 })
 app.use('/login', forwardAuthenticated, loginRouter)
 app.use('/register', forwardAuthenticated, regRouter)
 app.use('/browser', ensureAuthenticated, browserRouter)
 app.use('/enableAndConfigureProxy', ensureAuthenticated, proxyRouter)
+app.use('/admin', ensureAuthenticated, ensureAdmin, adminRouter)
 
 app.listen(PORT, console.log(`RoboVM listening on port ${PORT}`))
 

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoboVM</title>
+    <style>
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        @font-face {
+            font-family: pixeloid;
+            src: url('/fonts/PixeloidSans.ttf');
+        }
+        body {
+            margin: 0px;
+            height: 100vh;
+            overflow: hidden;
+            /* font-family: 'Courier New', Courier, monospace; */
+            font-family: pixeloid;
+        }
+        * {box-sizing: border-box;}
+        .bgImage {
+            width: 100vw;
+            height: 92vh;
+            object-fit: cover;
+            z-index: -1;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+        .taskbar {
+            width: 100vw;
+            height: 8vh;
+            background-color: #009a7c;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 0.5vw;
+        }
+        .taskbar img {
+            height: 6vh;
+            cursor: pointer;
+            transition: 0.25s;
+            opacity: 0.7;
+        }
+        .taskbar img:hover {
+            transform: scale(1.1, 1.1);
+        }
+        .taskbarApps {
+            display: flex;
+        }
+        .taskbarApp {
+            padding: 0 0.8vw;
+            height: 6vh;
+        }
+        .terminal {
+            background-color: black;
+            color: #16e16e;
+            width: 100vw;
+            height: 92vh;
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            padding: 1vw;
+            font-size: 1.1em;
+            transform: scale(0, 0);
+            transform-origin: center;
+            transition: 0.4s;
+            overflow: auto;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .commandWrapper {
+            display: flex;
+        }
+        .commandWrapper p {
+            margin: 0px;
+        }
+        .commandWrapper input {
+            padding: 0px;
+            border: none;
+            outline: none;
+            background-color: transparent;
+            color: white;
+            font-size: 1em;
+            font-family: 'Courier New', Courier, monospace;
+            flex: 1;
+        }
+        .terminalResponseText {
+            font-size: 1.1em;
+            margin: 0px;
+            color: white;
+            margin-bottom: 2vh;
+        }
+        .chhotucursor {
+            width: 0.08vw;
+            height: 2.1vh;
+            background-color: white;
+        }
+        .browser {
+            width: 100vw;
+            height: 92vh;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: white;
+            transform: scale(0, 0);
+            transform-origin: center;
+            transition: 0.4s;
+        }
+        .searchContainer {
+            display: flex;
+            padding: 1.5vh;
+            background-color: #ccc;
+        }
+        .browserSearchBar {
+            flex: 1;
+            font-size: 1.1vw;
+            font-family: sans-serif;
+            padding: 0.65vw;
+            border: none;
+            outline: none;
+        }
+        .browserBody {
+            flex: 1;
+            padding: 0.3vw;
+        }
+        .tsLogo .tsIcon {
+            opacity: 1;
+            height: 6vh;
+        }
+        .taskbarTime {
+            margin-right: 0.5vw;
+        }
+        .main {
+            width: fit-content;
+            height: 92vh;
+            display: flex;
+            align-items: flex-start;
+            flex-direction: column;
+            flex-wrap: wrap;
+            padding-left: 1.25vw;
+        }
+        .challengeIcon {
+            width: 17vh;
+            height: 17vh;
+            background-size: 17vh 17vh;
+            position: relative;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .challengeIcon:hover {
+            transform: scale(1.05, 1.05);
+        }
+        .challengeIcon p {
+            font-size: 1.75vh;
+            color: white;
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            text-align: center;
+            width: 100%;
+            margin: 0px;
+            margin-bottom: 0.5vh;
+        }
+        .kaalaContainer {
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.7);
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            visibility: hidden;
+            z-index: -2;
+        }
+        .challenge {
+            display: flex;
+            flex-direction: column;
+            width: 50vw;
+            height: 60vh;
+            background-color: #272727;
+            margin-top: -8vh;
+            line-height: 1.6;
+            justify-content: space-between;
+            transform: scale(0, 0);
+            transform-origin: center center;
+            transition: 0.4s;
+        }
+        .challengeTitle {
+            display: flex;
+            justify-content: space-between;
+            background-color: #009a7c;
+            align-items: center;
+        }
+        .challengeTitle p {
+            font-size: 2.5vh;
+            margin: 0px;
+            margin-left: 1.25vw;
+        }
+        .challengeTitle img {
+            height: 8vh;
+        }
+        .challengeBody {
+            padding: 3vh 2.5vw;
+            color: white;
+            font-weight: lighter;
+            font-size: 1.9vh;
+        }
+        .attachment {
+            background-color: #333;
+            display: flex;
+            padding: 1.5vh;
+            align-items: center;
+            justify-content: space-between;
+            width: 15vw;
+            margin-top: 3.5vh;
+        }
+        .attachment p {
+            color: #00e2a8;
+            font-size: 1.75vh;
+            margin: 0px;
+        }
+        .attachment a {
+            line-height: 0;
+        }
+        .attachment img {
+            height: 4vh;
+        }
+        .answer {
+            margin: 0px 2.5vw;
+            margin-bottom: 4vh;
+        }
+        .answer form {
+            display: flex;
+            gap: 2vw;
+        }
+        .answer input[type=text] {
+            flex: 1;
+            background-color: #222;
+            color: #888;
+            font-size: 2vh;
+            text-align: center;
+            font-family: pixeloid;
+            border: 0.5vh solid #4d4d4d;
+            outline: none;
+        }
+        .answer input[type=image] {
+            height: 7.5vh;
+        }
+    </style>
+</head>
+<body style="background-color: #111">
+    <img class="bgImage" src="/wallpaper.png">
+    <div class="main">
+        <% for (let i = 0; i < challenges.length; i++) { %>
+            <% if (challenges[i].type == 'cryptic') { %>
+            <div class="challengeIcon" style="background-image: url('/<%= challenges[i].type %>.png');" onclick="showChallenge('<%= challenges[i].challengeId %>')">
+                <p><%= challenges[i].title %></p>
+            </div>
+            <% } %>
+        <% } %>
+        <% for (let i = 0; i < challenges.length; i++) { %>
+            <% if (challenges[i].type == 'ctf') { %>
+            <div class="challengeIcon" style="background-image: url('/<%= challenges[i].type %>.png');" onclick="showChallenge('<%= challenges[i].challengeId %>')">
+                <p><%= challenges[i].title %></p>
+            </div>
+            <% } %>
+        <% } %>
+    </div>
+    <div class="taskbar">
+        <div class="tsLogo">
+            <img src="/ts.png" class="tsIcon">
+        </div>
+        <div class="taskbarApps">
+            <div class="taskbarApp">
+                <img src="/home.png" id="homeIcon" style="opacity: 1" onclick="goHome()">
+            </div>
+            <div class="taskbarApp">
+                <img src="/browser.png" id="browserIcon" onclick="openApp('browser', event)">
+            </div>
+            <div class="taskbarApp">
+                <img src="/terminal.png" id="terminalIcon" onclick="openApp('terminal', event)">
+            </div>
+        </div>
+        <div class="taskbarTime">
+            <span id="timeHours">00</span>:<span id="timeMinutes">00</span>
+        </div>
+    </div>
+    <div class="terminal" id="terminal"></div>
+    <div class="browser" id="browser">
+        <div class="searchContainer">
+            <input type="text" placeholder="Enter URL..." class='browserSearchBar' id="searchbar" onkeyup="handleBrowserSearch(event)">
+        </div>
+        <div class="browserBody" id="browserBody"></div>
+    </div>
+    <% for (let i = 0; i < challenges.length; i++) { %>
+    <div class="kaalaContainer" id="challengeContainer_<%= challenges[i].challengeId %>">
+        <div class="challenge" id="challenge_<%= challenges[i].challengeId %>">
+            <div>
+                <div class="challengeTitle">
+                    <p><%= challenges[i].title %></p>
+                    <img src="/cross.png" style="cursor: pointer" onclick="closeLevel('<%= challenges[i].challengeId %>')">
+                </div>
+                <div class="challengeBody">
+                    <p><%= challenges[i].description %></p>
+                    <% if (challenges[i].img != 'none') { %>
+                        <img src="<%= challenges[i].img %>" style="max-height: 15vh; margin: auto">
+                    <% } %>
+                    <% if (challenges[i].attachmentName != 'none') { %>
+                    <div class="attachment">
+                        <p><%= challenges[i].attachmentName %></p>
+                        <a href="<%= challenges[i].attachmentLink %>" target="_blank">
+                            <img src="/download.png">
+                        </a>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+            <div class="answer">
+                <form action="/check/<%= challenges[i].challengeId %>" method="POST">
+                    <input type="text" name="answer" placeholder="Enter <%= challenges[i].type == 'cryptic' ? 'Answer' : 'Flag' %>" autocomplete="off">
+                    <input type="image" src="/submit.png" alt="Submit">
+                </form>
+            </div>
+        </div>
+    </div>
+    <% } %>
+    <script>
+        makeCmdWrapper(false)
+
+        window.onload = () => {
+            setInterval(() => {
+                var mydate = new Date(),
+                    myHour = mydate.getHours().toString().padStart(2, '0'),
+                    myMin = mydate.getMinutes().toString().padStart(2, '0')
+                document.getElementById('timeHours').innerText = myHour
+                document.getElementById('timeMinutes').innerText = myMin
+            }, 1000)
+        }
+
+        function showChallenge(chall) {
+            document.getElementById('challengeContainer_' + chall).style.visibility = 'visible'
+            document.getElementById('challengeContainer_' + chall).style.zIndex = '1000'
+            document.getElementById('challenge_' + chall).style.transform = 'scale(1, 1)'
+        }
+        
+        function closeLevel(chall) {
+            document.getElementById('challengeContainer_' + chall).style.visibility = 'hidden'
+            document.getElementById('challengeContainer_' + chall).style.zIndex = '-10'
+            document.getElementById('challenge_' + chall).style.transform = 'scale(0, 0)'
+        }
+
+        async function handleBrowserSearch(e) {
+            if (e.key == 'Enter') {
+                const rawBrowserResp = await fetch('/browser', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        searchUrl: e.target.value
+                    })
+                })
+                const browserRespResolved = await rawBrowserResp.text()
+                document.getElementById('browserBody').innerHTML = browserRespResolved
+            }
+        }
+        async function handleCommand(e) {
+            if (e.key == 'Enter') {
+                const fakeCursor = document.createElement('div')
+                fakeCursor.className = 'chhotucursor'
+                document.getElementById('terminal').appendChild(fakeCursor)
+                e.target.blur()
+                if (e.target.value != '') {
+                    const rawResponse = await fetch('/check/cmd', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            cmd: e.target.value
+                        })
+                    })
+                    const responseText = await rawResponse.text()
+                    const cmdResponseText = document.createElement('p')
+                    cmdResponseText.innerHTML = responseText
+                    cmdResponseText.className = 'terminalResponseText'
+                    document.getElementById('terminal').removeChild(fakeCursor)
+                    document.getElementById('terminal').appendChild(cmdResponseText)
+                    await makeCmdWrapper(e)
+                } else {
+                    document.getElementById('terminal').removeChild(fakeCursor)
+                    makeCmdWrapper(e)
+                }
+            }
+        }
+        async function makeCmdWrapper(e) {
+            const cmdWrapper = document.createElement('div')
+            const cmdUserText = document.createElement('p')
+            const cmdInput = document.createElement('input')
+            const rawResp = await fetch('/getuser', {
+                method: 'POST'
+            })
+            const myUserName = await rawResp.text()
+            cmdWrapper.className = 'commandWrapper'
+            cmdUserText.innerHTML = myUserName + '@robotronics:~$&nbsp;'
+            cmdInput.setAttribute('type', 'text')
+            cmdInput.setAttribute('spellcheck', 'false')
+            cmdInput.setAttribute('onkeyup', 'handleCommand(event)')
+            cmdWrapper.appendChild(cmdUserText)
+            cmdWrapper.appendChild(cmdInput)
+            document.getElementById('terminal').appendChild(cmdWrapper)
+            cmdInput.focus()
+            if (e) e.target.setAttribute('disabled', 'true')
+        }
+
+        function openApp(myapp, e) {
+            document.getElementById('homeIcon').style.opacity = '0.7'
+            document.getElementById('browserIcon').style.opacity = '0.7'
+            document.getElementById('terminalIcon').style.opacity = '0.7'
+            e.target.style.opacity = '1'
+            document.getElementById('browser').style.transform = 'scale(0, 0)'
+            document.getElementById('terminal').style.transform = 'scale(0, 0)'
+            document.getElementById(myapp).style.transform = 'scale(1, 1)'
+        }
+        
+        function goHome() {
+            document.getElementById('terminal').style.transform = 'scale(0, 0)'
+            document.getElementById('browser').style.transform = 'scale(0, 0)'
+            document.getElementById('browserIcon').style.opacity = '0.7'
+            document.getElementById('terminalIcon').style.opacity = '0.7'
+            document.getElementById('homeIcon').style.opacity = '1'
+        }
+    </script>
+</body>
+</html>

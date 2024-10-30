@@ -1,4 +1,4 @@
-const validCommands = ['echo', 'cat', 'whoami', 'pwd', 'cd', 'ls', 'dir', 'mkdir', 'touch', 'ssh', 'rm', 'mv', 'rmdir', 'cp', 'file', 'grep', 'head', 'tail', 'diff', 'ping', 'curl', 'man', 'ln', 'clear']
+const validCommands = ['echo', 'cat', 'whoami', 'pwd', 'cd', 'ls', 'dir', 'mkdir', 'touch', 'ssh', 'rm', 'mv', 'rmdir', 'cp', 'file', 'grep', 'ping', 'curl', 'man', 'clear']
     // User = require('../schemas/userSchema')
 
 const checkCmd = async (cmd, req) => {
@@ -20,7 +20,7 @@ const checkCmd = async (cmd, req) => {
 }
 
 function getUser(req) {
-    return req.username
+    return req.name
 }
 
 async function getDirectory() {

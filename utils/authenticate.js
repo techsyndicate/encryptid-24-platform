@@ -16,4 +16,12 @@ function forwardAuthenticated(req, res, next) {
     }
 }
 
-module.exports = { ensureAuthenticated, forwardAuthenticated};
+function ensureAdmin(req, res, next) {
+  if (req.user.admin) {
+    return next()
+  } else {
+    res.redirect('/')
+  }
+}
+
+module.exports = { ensureAuthenticated, forwardAuthenticated, ensureAdmin };

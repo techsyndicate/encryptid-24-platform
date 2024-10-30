@@ -7,19 +7,23 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-     const {username, password, name, cnfpassword} = req.body
-     const foundUser = await User.findOne({username})
-     if (!username || !password || !name || !cnfpassword) {
+     const {email, password, name, cnfpassword} = req.body
+     const foundUser = await User.findOne({email})
+     const foundUser2 = await User.findOne({name})
+     if (!email || !password || !name || !cnfpassword) {
         return res.render('register', {error: "Please enter all the credentials."})
      }
      if (password != cnfpassword) {
         return res.render('register', {error: "The passwords do not match!"})
      }
      if (foundUser) {
-        return res.render('register', {error: "A user with this username already exists. Please enter a unique username."})
+        return res.render('register', {error: "A user with this email already exists. Please login instead."})
+     }
+     if (foundUser2) {
+        return res.render('register', {error: "A user with this display name already exists. Please login instead."})
      }
      const newUser = new User({
-        username: username,
+        email: email,
         name: name,
         password: await bcrypt.hash(password, 10)
      })
