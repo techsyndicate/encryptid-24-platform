@@ -3,10 +3,15 @@ const router = require('express').Router(),
     Challenge = require('../schemas/challengeSchema')
 
 router.get('/', async (req, res) => {
-    const allUsers = await User.find()
-    const crypticLevels = await Challenge.find({type: 'cryptic'})
-    const ctfLevels = await Challenge.find({type: 'ctf'})
-    res.render('admin', {users: allUsers, crypticLevels, ctfLevels})
+    try {
+        const allUsers = await User.find()
+        const crypticLevels = await Challenge.find({type: 'cryptic'})
+        const ctfLevels = await Challenge.find({type: 'ctf'})
+        res.render('admin', {users: allUsers, crypticLevels, ctfLevels})       
+    } catch (error) {
+        console.log(error)
+        res.end('something went wrong. pliz check console.')
+    }
 })
 
 router.get('/new', (req, res) => {
@@ -15,14 +20,14 @@ router.get('/new', (req, res) => {
 
 router.post('/new', async (req, res) => {
     try {
-        var {title, description, challengeId, type, points, attachmentLink, attachmentName, img} = req.body
-        if (!title || !description || !challengeId || !type || !points) {
+        var {title, description, challengeId, type, points, attachmentLink, attachmentName, img, answer} = req.body
+        if (!title || !description || !challengeId || !type || !points || !answer) {
             return res.render('newChallenge', {error: 'Please enter all the creds!'})
         }
         if (!attachmentLink) attachmentLink = 'none'
         if (!attachmentName) attachmentName = 'none'
         if (!img) img = 'none'
-        const newChallenge = new Challenge({title, description, challengeId, type, points, attachmentLink, attachmentName, img})
+        const newChallenge = new Challenge({title, description, challengeId, type, points, attachmentLink, attachmentName, img, answer})
         await newChallenge.save()
         res.redirect('/admin')       
     } catch (error) {
@@ -46,18 +51,23 @@ router.get('/user/:id', async (req, res) => {
 })
 
 router.get('/challenge/:id', async (req, res) => {
-    const foundChallenge = await Challenge.findOne({challengeId: req.params.id})
-    if (!foundChallenge) return res.redirect('/admin')
-    res.render('adminChallenge', {challenge: foundChallenge})
+    try {
+        const foundChallenge = await Challenge.findOne({challengeId: req.params.id})
+        if (!foundChallenge) return res.redirect('/admin')
+        res.render('adminChallenge', {challenge: foundChallenge})      
+    } catch (error) {
+        console.log(error)
+        res.end('something went wrong. pliz check console.')
+    }
 })
 
 router.post('/challenge/:id', async (req, res) => {
     try {
         const foundChallenge = await Challenge.findOne({challengeId: req.params.id})
         if (!foundChallenge) return res.redirect('/admin')
-        const {title, description, challengeId, type, points, img, attachmentLink, attachmentName} = req.body
+        const {title, description, challengeId, type, points, img, attachmentLink, attachmentName, answer} = req.body
         await Challenge.updateOne({challengeId: req.params.id}, {
-            $set: {title, description, challengeId, type, points, img, attachmentLink, attachmentName}
+            $set: {title, description, challengeId, type, points, img, attachmentLink, attachmentName, answer}
         })
         res.redirect(`/admin/challenge/${req.params.id}`)      
     } catch (error) {

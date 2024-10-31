@@ -8,6 +8,7 @@ const challengeSchema = new Schema({
     description: reqString,
     type: reqString,
     points: reqString,
+    answer: reqString,
     attachmentName: {
         type: String,
         required: true,

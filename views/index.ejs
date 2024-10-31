@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
     <title>RoboVM</title>
     <style>
         ::-webkit-scrollbar {
@@ -240,7 +241,7 @@
             margin: 0px 2.5vw;
             margin-bottom: 4vh;
         }
-        .answer form {
+        .answer div {
             display: flex;
             gap: 2vw;
         }
@@ -312,7 +313,7 @@
                     <img src="/cross.png" style="cursor: pointer" onclick="closeLevel('<%= challenges[i].challengeId %>')">
                 </div>
                 <div class="challengeBody">
-                    <p><%= challenges[i].description %></p>
+                    <p><%-challenges[i].description %></p>
                     <% if (challenges[i].img != 'none') { %>
                         <img src="<%= challenges[i].img %>" style="max-height: 15vh; margin: auto">
                     <% } %>
@@ -327,16 +328,18 @@
                 </div>
             </div>
             <div class="answer">
-                <form action="/check/<%= challenges[i].challengeId %>" method="POST">
-                    <input type="text" name="answer" placeholder="Enter <%= challenges[i].type == 'cryptic' ? 'Answer' : 'Flag' %>" autocomplete="off">
-                    <input type="image" src="/submit.png" alt="Submit">
-                </form>
+                <div>
+                    <input type="text" id="answer" name="answer" placeholder="Enter <%= challenges[i].type == 'cryptic' ? 'Answer' : 'Flag' %>" autocomplete="off" onkeyup="checkAnswer(event, '<%= challenges[i].challengeId %>')">
+                    <input type="image" src="/submit.png" alt="Submit" onclick="checkAnswer(false, '<%= challenges[i].challengeId %>')">
+                </div>
             </div>
         </div>
     </div>
     <% } %>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
     <script>
         makeCmdWrapper(false)
+        var notyf = new Notyf()
 
         window.onload = () => {
             setInterval(() => {
@@ -346,6 +349,31 @@
                 document.getElementById('timeHours').innerText = myHour
                 document.getElementById('timeMinutes').innerText = myMin
             }, 1000)
+        }
+
+        function checkAnswer(ev, level) {
+            if ((ev && ev.keyCode == 13) || !ev) {
+                fetch('/check/' + level, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        answer: document.getElementById('answer').value
+                    })
+                })
+                .then(resp => resp.json())
+                .then(data => {
+                    if (data.success) {
+                        notyf.success('Correct!')
+                        setTimeout(() => {
+                            window.location.reload()
+                        }, 1000)
+                    } else {
+                        notyf.error(data.message)
+                    }
+                })
+            }
         }
 
         function showChallenge(chall) {
