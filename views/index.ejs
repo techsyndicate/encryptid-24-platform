@@ -417,9 +417,9 @@
                         <div class="profileLeft">
                             <div class="profileName">
                                 <p id="profileNameText"><%= user.name %></p>
-                                <input id="profileNameInput" type="text" value="LeLagoon">
+                                <!-- <input id="profileNameInput" type="text" value="LeLagoon">
                                 <img src="/edit.png" onclick="editDisplayName()" id="profileEditIcon">
-                                <img src="/tick.png" onclick="sendDisplayName()" style="display: none" id="profileTickIcon">
+                                <img src="/tick.png" onclick="sendDisplayName()" style="display: none" id="profileTickIcon"> -->
                             </div>
                             <p class="profileTeam"><%= user.teamName || 'Individual' %></p>
                         </div>
@@ -491,36 +491,36 @@
             }, 1000)
         }
 
-        function editDisplayName() {
-            input.style.display = 'block'
-            text.style.display = 'none'
-            document.getElementById('profileEditIcon').style.display = 'none'
-            document.getElementById('profileTickIcon').style.display = 'block'
-        }
+        // function editDisplayName() {
+        //     input.style.display = 'block'
+        //     text.style.display = 'none'
+        //     document.getElementById('profileEditIcon').style.display = 'none'
+        //     document.getElementById('profileTickIcon').style.display = 'block'
+        // }
         
-        function sendDisplayName() {
-            const value = input.value
-            fetch('/changeProfile', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({displayName: value})
-            })
-            .then(resp => resp.json())
-            .then(data => {
-                if (!data.success) {
-                    notyf.error(data.message)
-                    input.style.display = 'none'
-                    text.style.display = 'block'
-                    document.getElementById('profileEditIcon').style.display = 'block'
-                    document.getElementById('profileTickIcon').style.display = 'none'
-                    input.value = text.innerText
-                } else {
-                    window.location.reload()
-                }
-            })
-        }
+        // function sendDisplayName() {
+        //     const value = input.value
+        //     fetch('/changeProfile', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         },
+        //         body: JSON.stringify({displayName: value})
+        //     })
+        //     .then(resp => resp.json())
+        //     .then(data => {
+        //         if (!data.success) {
+        //             notyf.error(data.message)
+        //             input.style.display = 'none'
+        //             text.style.display = 'block'
+        //             document.getElementById('profileEditIcon').style.display = 'block'
+        //             document.getElementById('profileTickIcon').style.display = 'none'
+        //             input.value = text.innerText
+        //         } else {
+        //             window.location.reload()
+        //         }
+        //     })
+        // }
         
         function checkAnswer(ev, level) {
             if ((ev && ev.keyCode == 13) || !ev) {
