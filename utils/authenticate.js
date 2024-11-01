@@ -24,4 +24,11 @@ function ensureAdmin(req, res, next) {
   }
 }
 
-module.exports = { ensureAuthenticated, forwardAuthenticated, ensureAdmin };
+function forwardBanned(req, res, next) {
+  if (!req.user.banned) {
+    return next()
+  }
+  res.redirect('/banned')
+}
+
+module.exports = { ensureAuthenticated, forwardAuthenticated, ensureAdmin, forwardBanned };

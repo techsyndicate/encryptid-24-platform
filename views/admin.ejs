@@ -156,162 +156,24 @@
         <div class="challengeTypes">
             <div class="challengeType" style="width: 75vw; height: 80vh;">
                 <p>Logs for all challenges:</p>
-                <div style="height: 72vh;">
+                <div style="height: 72vh; position: relative;">
                     <table>
-                        <tr>
+                        <tr style="position: sticky; top: 0">
                             <th>Challenge</th>
                             <th>User</th>
                             <th>Attempt</th>
                             <th>Correct?</th>
                             <th>Time</th>
                         </tr>
+                        <% for (let i = 0; i < logs.length; i++) { %>
                         <tr>
-                            <td>Level 1</td>
-                            <td>nish</td>
-                            <td>lagoon123</td>
-                            <td>No</td>
-                            <td>3/1/2024, 21:29</td>
+                            <td><%= logs[i].challenge %></td>
+                            <td><%= logs[i].user %></td>
+                            <td><%= logs[i].attempt %></td>
+                            <td><%= logs[i].correct ? 'Yes' : 'No' %></td>
+                            <td><%= logs[i].time %></td>
                         </tr>
-                        <tr>
-                            <td>Level 1</td>
-                            <td>nish</td>
-                            <td>lagoon123</td>
-                            <td>No</td>
-                            <td>3/1/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>Level 1</td>
-                            <td>nish</td>
-                            <td>lagoon123</td>
-                            <td>No</td>
-                            <td>3/1/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>Level 1</td>
-                            <td>nish</td>
-                            <td>lagoon123</td>
-                            <td>No</td>
-                            <td>3/1/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>Level 1</td>
-                            <td>nish</td>
-                            <td>lagoon123</td>
-                            <td>No</td>
-                            <td>3/1/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>Level 1</td>
-                            <td>nish</td>
-                            <td>lagoon123</td>
-                            <td>No</td>
-                            <td>3/1/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>Level 1</td>
-                            <td>nish</td>
-                            <td>lagoon123</td>
-                            <td>No</td>
-                            <td>3/1/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>Level 1</td>
-                            <td>nish</td>
-                            <td>lagoon123</td>
-                            <td>No</td>
-                            <td>3/1/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>Level 1</td>
-                            <td>nish</td>
-                            <td>lagoon123</td>
-                            <td>No</td>
-                            <td>3/1/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>Level 1</td>
-                            <td>nish</td>
-                            <td>lagoon123</td>
-                            <td>No</td>
-                            <td>3/1/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>Level 1</td>
-                            <td>nish</td>
-                            <td>lagoon123</td>
-                            <td>No</td>
-                            <td>3/1/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>Level 1</td>
-                            <td>nish</td>
-                            <td>lagoon123</td>
-                            <td>No</td>
-                            <td>3/1/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>Level 1</td>
-                            <td>nish</td>
-                            <td>lagoon123</td>
-                            <td>No</td>
-                            <td>3/1/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>Level 1</td>
-                            <td>nish</td>
-                            <td>lagoon123</td>
-                            <td>No</td>
-                            <td>3/1/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>Level 1</td>
-                            <td>nish</td>
-                            <td>lagoon123</td>
-                            <td>No</td>
-                            <td>3/1/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>Level 1</td>
-                            <td>nish</td>
-                            <td>lagoon123</td>
-                            <td>No</td>
-                            <td>3/1/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>Level 1</td>
-                            <td>nish</td>
-                            <td>lagoon123</td>
-                            <td>No</td>
-                            <td>3/1/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>Level 1</td>
-                            <td>nish</td>
-                            <td>lagoon123</td>
-                            <td>No</td>
-                            <td>3/1/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>Level 1</td>
-                            <td>nish</td>
-                            <td>lagoon123</td>
-                            <td>No</td>
-                            <td>3/1/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>Level 1</td>
-                            <td>nish</td>
-                            <td>lagoon123</td>
-                            <td>No</td>
-                            <td>3/1/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>Level 1</td>
-                            <td>nish</td>
-                            <td>lagoon123</td>
-                            <td>No</td>
-                            <td>3/1/2024, 21:29</td>
-                        </tr>
+                        <% } %>
                     </table>
                 </div>
             </div>

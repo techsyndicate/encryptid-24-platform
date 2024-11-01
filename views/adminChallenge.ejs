@@ -173,186 +173,20 @@
                 <p>Logs for challenge:</p>
                 <div style="height: 72vh;">
                     <table>
-                        <tr>
+                        <tr style="position: sticky; top: 0">
                             <th>User</th>
                             <th>Attempt</th>
                             <th>Correct?</th>
                             <th>Time</th>
                         </tr>
+                        <% for (let i = 0; i < logs.length; i++) { %>
                         <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
+                            <td><%= logs[i].user %></td>
+                            <td><%= logs[i].attempt %></td>
+                            <td><%= logs[i].correct ? 'Yes' : 'No' %></td>
+                            <td><%= logs[i].time %></td>
                         </tr>
-                        <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
-                        </tr>
-                        <tr>
-                            <td>LeLagoon</td>
-                            <td>LeLagoon</td>
-                            <td>No</td>
-                            <td>20/11/2024, 21:29</td>
-                        </tr>
+                        <% } %>
                     </table>
                 </div>
             </div>

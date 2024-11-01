@@ -15,7 +15,7 @@ const express = require('express'),
     adminRouter = require('./routers/adminRouter'),
     checkRouter = require('./routers/checkRouter'),
     {checkCmd} = require('./utils/bash'),
-    {ensureAuthenticated, forwardAuthenticated, ensureAdmin} = require('./utils/authenticate'),
+    {ensureAuthenticated, forwardAuthenticated, ensureAdmin, forwardBanned} = require('./utils/authenticate'),
     User = require('./schemas/userSchema'),
     Challenge = require('./schemas/challengeSchema'),
     passportInit = require('./utils/passport-config'),
@@ -48,9 +48,17 @@ app.use(passport.session())
 mongoose.connect(process.env.MONGO_URI, console.log('MONGODB CONNECTED'))
 
 app.get('/', async(req, res) => {
-    if (!req.user) return res.redirect('/login')
-    const foundChallenges = await Challenge.find()
-    res.render('index', {challenges: foundChallenges})
+    try {
+        const myUser = req.user
+        if (!myUser) return res.redirect('/login')
+        if (myUser.banned) return res.redirect('/banned')
+        const allUsers = await User.find().sort({points: 'desc', lastAnswered: 'desc'})
+        const foundChallenges = await Challenge.find()
+        res.render('index', {challenges: foundChallenges, user: myUser, allUsers})      
+    } catch (error) {
+        console.log(error)
+        res.end('something went wrong. please try again.')
+    }
 })
 app.post('/check/cmd', async (req, res) => {
     if (!req.user) return res.end('no user found')
@@ -62,12 +70,15 @@ app.post('/getuser', async (req, res) => {
     if (!req.user) return res.end('guest')
     return res.end(req.user.name)
 })
+app.get('/banned', (req, res) => {
+    res.render('banned')
+})
 app.use('/login', forwardAuthenticated, loginRouter)
 app.use('/register', forwardAuthenticated, regRouter)
-app.use('/browser', ensureAuthenticated, browserRouter)
-app.use('/enableAndConfigureProxy', ensureAuthenticated, proxyRouter)
-app.use('/admin', ensureAuthenticated, ensureAdmin, adminRouter)
-app.use('/check', ensureAuthenticated, checkRouter)
+app.use('/browser', ensureAuthenticated, forwardBanned, browserRouter)
+app.use('/enableAndConfigureProxy', ensureAuthenticated, forwardBanned, proxyRouter)
+app.use('/admin', ensureAuthenticated, ensureAdmin, forwardBanned, adminRouter)
+app.use('/check', ensureAuthenticated, forwardBanned, checkRouter)
 
 app.listen(PORT, console.log(`RoboVM listening on port ${PORT}`))
 
