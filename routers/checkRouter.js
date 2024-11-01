@@ -31,7 +31,6 @@ router.post('/:id', async (req, res) => {
             })
             return res.json({success: false, message: 'Wrong answer!'})
         } else {
-            if (req.user.solves.includes('level1cryptic'))
             const points = req.user.points + foundChallenge.points
             const solves = req.user.solves
             var challSolves = foundChallenge.solves,
