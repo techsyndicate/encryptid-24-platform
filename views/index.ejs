@@ -464,7 +464,7 @@
             </div>
             <div class="answer">
                 <div>
-                    <input type="text" id="answer" name="answer" placeholder="Enter <%= challenges[i].type == 'cryptic' ? 'Answer' : 'Flag' %>" autocomplete="off" onkeyup="checkAnswer(event, '<%= challenges[i].challengeId %>')">
+                    <input type="text" id="answer_<%= challenges[i].challengeId %>" name="answer" placeholder="Enter <%= challenges[i].type == 'cryptic' ? 'Answer' : 'Flag' %>" autocomplete="off" onkeyup="checkAnswer(event, '<%= challenges[i].challengeId %>')">
                     <input type="image" src="/submit.png" alt="Submit" onclick="checkAnswer(false, '<%= challenges[i].challengeId %>')">
                 </div>
             </div>
@@ -526,12 +526,12 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        answer: document.getElementById('answer').value
+                        answer: document.getElementById('answer_' + level).value
                     })
                 })
                 .then(resp => resp.json())
                 .then(data => {
-                    document.getElementById('answer').value = ''
+                    document.getElementById('answer_' + level).value = ''
                     if (data.success) {
                         notyf.success('Correct!')
                         setTimeout(() => {
