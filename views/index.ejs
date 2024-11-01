@@ -291,6 +291,10 @@
             display: flex;
             gap: 1.5vh;
         }
+        .profileTeam {
+            color: #888;
+            margin: 1vh 0;
+        }
         .profileFlex {
             display: flex;
             justify-content: space-between;
@@ -298,10 +302,31 @@
         }
         .profileName {
             display: flex;
-            gap: 1vw;
+            gap: 0.75vw;
+            align-items: center;
         }
         .profileName p {
-            font-size: 2.6vh;
+            font-size: 2.9vh;
+            margin: 0px;
+        }
+        .profileName input {
+            font-size: 2.9vh;
+            margin: 0px;
+            width: fit-content;
+            background-color: transparent;
+            color: #fff;
+            border: 0.5vh solid #888;
+            outline: none;
+            font-family: pixeloid;
+            display: none;
+        }
+        .profileName img {
+            height: 2.8vh;
+            cursor: pointer;
+        }
+        .profilePoints {
+            font-size: 2.35vh;
+            margin: 0px;
         }
     </style>
 </head>
@@ -381,7 +406,7 @@
         </div>
     </div>
     <div class="kaalaContainer" id="challengeContainer_profile">
-        <div class="challenge" id="challenge_profile" style="height: 32.5vh;">
+        <div class="challenge" id="challenge_profile" style="height: auto;">
             <div>
                 <div class="challengeTitle">
                     <p>Profile</p>
@@ -391,12 +416,14 @@
                     <div class="profileFlex">
                         <div class="profileLeft">
                             <div class="profileName">
-                                <p>LeLagoon</p>
-                                <img src="/edit.png">
+                                <p id="profileNameText"><%= user.name %></p>
+                                <input id="profileNameInput" type="text" value="LeLagoon">
+                                <img src="/edit.png" onclick="editDisplayName()" id="profileEditIcon">
+                                <img src="/tick.png" onclick="sendDisplayName()" style="display: none" id="profileTickIcon">
                             </div>
-                            <p>Tech Syndi</p>
+                            <p class="profileTeam"><%= user.teamName || 'Individual' %></p>
                         </div>
-                        <p>1250 gB</p>
+                        <p class="profilePoints"><%= user.points %> gB</p>
                     </div>
                 </div>
             </div>
@@ -440,8 +467,21 @@
     <script>
         makeCmdWrapper(false)
         var notyf = new Notyf()
+        const input = document.getElementById('profileNameInput'),
+            text = document.getElementById('profileNameText')
 
         window.onload = () => {
+            const span = document.createElement("span");
+            input.value = document.getElementById('profileNameText').innerHTML
+            span.style.visibility = "hidden";
+            span.style.position = "absolute";
+            span.style.fontSize = window.getComputedStyle(input).fontSize;
+            span.style.fontFamily = window.getComputedStyle(input).fontFamily;
+            span.style.padding = window.getComputedStyle(input).padding;
+            span.textContent = input.value;
+            document.body.appendChild(span);
+            input.style.width = span.offsetWidth + 10 + "px";
+            document.body.removeChild(span);
             setInterval(() => {
                 var mydate = new Date(),
                     myHour = mydate.getHours().toString().padStart(2, '0'),
@@ -450,6 +490,38 @@
                 document.getElementById('timeMinutes').innerText = myMin
             }, 1000)
         }
+
+        function editDisplayName() {
+            input.style.display = 'block'
+            text.style.display = 'none'
+            document.getElementById('profileEditIcon').style.display = 'none'
+            document.getElementById('profileTickIcon').style.display = 'block'
+        }
+        
+        function sendDisplayName() {
+            const value = input.value
+            fetch('/changeProfile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({displayName: value})
+            })
+            .then(resp => resp.json())
+            .then(data => {
+                if (!data.success) {
+                    notyf.error(data.message)
+                    input.style.display = 'none'
+                    text.style.display = 'block'
+                    document.getElementById('profileEditIcon').style.display = 'block'
+                    document.getElementById('profileTickIcon').style.display = 'none'
+                    input.value = text.innerText
+                } else {
+                    window.location.reload()
+                }
+            })
+        }
+        
         function checkAnswer(ev, level) {
             if ((ev && ev.keyCode == 13) || !ev) {
                 fetch('/check/' + level, {

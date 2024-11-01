@@ -22,6 +22,8 @@ const express = require('express'),
     bcrypt = require('bcrypt'),
     MongoStore = require('connect-mongo')
 
+    
+mongoose.connect(process.env.MONGO_URI, console.log('MONGODB CONNECTED'))
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
 app.set('view engine', 'ejs')
@@ -45,7 +47,6 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
-mongoose.connect(process.env.MONGO_URI, console.log('MONGODB CONNECTED'))
 
 app.get('/', async(req, res) => {
     try {
@@ -72,6 +73,23 @@ app.post('/getuser', async (req, res) => {
 })
 app.get('/banned', (req, res) => {
     res.render('banned')
+})
+app.post('/changeProfile', async (req, res) => {
+    try {
+        const user = req.user,
+            {displayName} = req.body
+        if (displayName == user.name) return res.json({success: true})
+        if (!displayName || displayName == '') return res.json({success: false, message: 'Display name is empty!'})
+        const foundUser = await User.findOne({name: displayName})
+        if (foundUser) return res.json({success: false, message: 'Display name already exists!'})
+        await User.findByIdAndUpdate(user.id, {
+            name: displayName
+        })
+        res.json({success: true})      
+    } catch (error) {
+        console.log(error)
+        res.json({success: false, message: 'Something went wrong.'})
+    }
 })
 app.use('/login', forwardAuthenticated, loginRouter)
 app.use('/register', forwardAuthenticated, regRouter)
