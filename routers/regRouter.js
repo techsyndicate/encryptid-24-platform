@@ -7,10 +7,10 @@ router.get('/', (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-     const {email, password, name, cnfpassword} = req.body
+     const {email, password, name, cnfpassword, teamName} = req.body
      const foundUser = await User.findOne({email})
      const foundUser2 = await User.findOne({name})
-     if (!email || !password || !name || !cnfpassword) {
+     if (!email || !password || !name || !cnfpassword || !teamName) {
         return res.render('register', {error: "Please enter all the credentials."})
      }
      if (password != cnfpassword) {
@@ -25,7 +25,8 @@ router.post('/', async (req, res) => {
      const newUser = new User({
         email: email,
         name: name,
-        password: await bcrypt.hash(password, 10)
+        password: await bcrypt.hash(password, 10),
+        teamName
      })
      await newUser.save()
      res.redirect('/login')

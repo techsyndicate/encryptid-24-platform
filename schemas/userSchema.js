@@ -42,6 +42,11 @@ const userSchema = new Schema({
         required: true,
         default: []
     },
+    lockedLevels: {
+        type: Array,
+        required: true,
+        default: ['level4cryptic', 'level5cryptic']
+    }
 })
 
 module.exports = mongoose.model("User", userSchema)

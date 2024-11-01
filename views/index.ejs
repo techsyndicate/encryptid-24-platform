@@ -262,7 +262,6 @@
             font-family: pixeloid;
             border: 0.5vh solid #4d4d4d;
             outline: none;
-            height: 5vh;
         }
         .answer input[type=image] {
             height: 7.5vh;
@@ -464,15 +463,10 @@
                 </div>
             </div>
             <div class="answer">
-                <div class="form" style="display: flex; flex-direction: row; justify-content: center; align-items: center; width: 100%;">
-                    <form action="/check/<%= challenges[i].challengeId %>" method="POST">
-                        <input type="text" id="answer" name="answer" placeholder="Enter <%= challenges[i].type == 'cryptic' ? 'Answer' : 'Flag' %>" autocomplete="off">
-                        <button type="submit" style="outline: none; border: none; background: none; ">
-                            <img src="/submit.png" alt="Submit" style="height: 5vh;">
-                        </button>
-                    </form>
+                <div>
+                    <input type="text" id="answer" name="answer" placeholder="Enter <%= challenges[i].type == 'cryptic' ? 'Answer' : 'Flag' %>" autocomplete="off" onkeyup="checkAnswer(event, '<%= challenges[i].challengeId %>')">
+                    <input type="image" src="/submit.png" alt="Submit" onclick="checkAnswer(false, '<%= challenges[i].challengeId %>')">
                 </div>
-                    <!-- <input type="image" src="/submit.png" alt="Submit" onclick="checkAnswer(false, '')"> -->
             </div>
         </div>
     </div>
@@ -482,21 +476,8 @@
     <script>
         makeCmdWrapper(false)
         var notyf = new Notyf()
-        const input = document.getElementById('profileNameInput'),
-            text = document.getElementById('profileNameText')
 
         window.onload = () => {
-            const span = document.createElement("span");
-            input.value = document.getElementById('profileNameText').innerHTML
-            span.style.visibility = "hidden";
-            span.style.position = "absolute";
-            span.style.fontSize = window.getComputedStyle(input).fontSize;
-            span.style.fontFamily = window.getComputedStyle(input).fontFamily;
-            span.style.padding = window.getComputedStyle(input).padding;
-            span.textContent = input.value;
-            document.body.appendChild(span);
-            input.style.width = span.offsetWidth + 10 + "px";
-            document.body.removeChild(span);
             setInterval(() => {
                 var mydate = new Date(),
                     myHour = mydate.getHours().toString().padStart(2, '0'),
