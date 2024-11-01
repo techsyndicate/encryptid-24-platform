@@ -13,6 +13,7 @@ router.post('/:id', async (req, res) => {
             return res.json({success: false, message: 'Already answered!'})
         }
         const foundAnswer = foundChallenge.answer
+        console.log(req.body)
         const newDate = new Date()
         if (answer !== foundAnswer) {
             userLogs.push({
@@ -28,7 +29,8 @@ router.post('/:id', async (req, res) => {
                     logs: userLogs
                 }
             })
-            return res.json({success: false, message: 'Wrong answer!'})
+            return res.redirect('/')
+            // return res.json({success: false, message: 'Wrong answer!'})
         } else {
             const points = req.user.points + foundChallenge.points
             const solves = req.user.solves
@@ -57,7 +59,8 @@ router.post('/:id', async (req, res) => {
                 solves: challSolves,
                 solvers: challSolvers
             })
-            return res.json({success: true, message: 'Correct!'})
+            // return res.json({success: true, message: 'Correct!'})
+            return res.redirect('/')
         }  
     } catch (error) {
         console.log(error)

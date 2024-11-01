@@ -54,7 +54,10 @@ app.get('/', async(req, res) => {
         if (!myUser) return res.redirect('/login')
         if (myUser.banned) return res.redirect('/banned')
         const allUsers = await User.find().sort({points: 'desc', lastAnswered: 'desc'})
-        const foundChallenges = await Challenge.find()
+        const foundChallenges = await Challenge.find().sort({title:1})
+        const cryptChallenges = await Challenge.find({type: 'cryptic'}).sort({title:1})
+        console.log("USER: ", req.user.solves)
+        // console.log("CHALLENGES: ", cryptChallenges)
         res.render('index', {challenges: foundChallenges, user: myUser, allUsers})      
     } catch (error) {
         console.log(error)
@@ -74,6 +77,14 @@ app.post('/getuser', async (req, res) => {
 app.get('/banned', (req, res) => {
     res.render('banned')
 })
+
+app.get('/logout', (req, res) => {
+    req.logout((err) => {
+        if (err) console.log(err)
+        return res.redirect('/login')
+    });
+})
+
 app.post('/changeProfile', async (req, res) => {
     try {
         const user = req.user,

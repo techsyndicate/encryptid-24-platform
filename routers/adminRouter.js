@@ -5,8 +5,8 @@ const router = require('express').Router(),
 router.get('/', async (req, res) => {
     try {
         const allUsers = await User.find()
-        const crypticLevels = await Challenge.find({type: 'cryptic'})
-        const ctfLevels = await Challenge.find({type: 'ctf'})
+        const crypticLevels = await Challenge.find({type: 'cryptic'}).sort({title:1})
+        const ctfLevels = await Challenge.find({type: 'ctf'}).sort({challengeId:1})
         const allLogs = []
         for (let i = 0; i < allUsers.length; i++) {
             for (let j = 0; j < allUsers[i].logs.length; j++) {

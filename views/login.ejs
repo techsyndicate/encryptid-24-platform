@@ -3,17 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login to RoboVM</title>
+    <title>Login to Encryptid'24</title>
 </head>
 <body>
-    <form action="" method="POST">
-        <input type="text" name="email" placeholder="Email:">
-        <input type="password" name="password" placeholder="Password:">
-        <input type="submit"><br>
-        <% if (messages.error) { %>
-            <p><%= messages.error %></p>
-        <% } %>
-        <a href="/register">Register here</a>
-    </form>
+
+    <div class="whole">
+        <div class="head">
+            Login
+        </div>
+        <div class="box">
+            <form action="/login" method="POST">
+                <div class="email">
+                    <label for="email">Email</label>
+                    <input type="text" name="email" placeholder="encryptid@techsyndicate.us" autocomplete="off">
+                </div>
+                <div class="">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" placeholder="********" autocomplete="off">
+                </div>
+                
+                <a style="color:#7d7d7d; text-align: right; text-decoration: none; margin-left: 88%;" href="/register">Register here</a>
+                <button type="submit">Submit</button>
+                <% if (messages.error) { %>
+                    <p><%= messages.error %></p>
+                <% } %>
+            </form>
+        </div>
+    </div>
+
 </body>
+
+<style>
+    @font-face {
+            font-family: pixeloid;
+            src: url('/fonts/PixeloidSans.ttf');
+    }
+    body {
+        margin: 0px;
+        height: 100vh;
+        overflow: hidden;
+        background-color: #111111;
+        font-family: pixeloid;
+        display: flex;
+        justify-content: space-between;
+    }
+    .whole{
+        width: 60%;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #272727;
+        height: 42%;
+        padding: 0;
+        margin: 0;
+        position: absolute;
+        top: 29%;
+        left: 20%;
+    }
+    .head{
+        display: flex;
+        justify-content: space-between;
+        background-color: #009a7c;
+        align-items: center;
+        font-size: 2.5vh;
+        width: 96%;
+        padding-left: 2%;
+        padding-right: 2%;
+        height: 5vh;
+    }
+    .box {
+        display: flex;
+        flex-direction: column;
+        width: 500px;
+        height: 600px;
+        background-color: #272727;
+        line-height: 1.6;
+        justify-content: space-between;
+        transform-origin: center center;
+        transition: 0.4s;
+        z-index: 10;
+        align-self: center;
+        width: 80%;
+        
+    }
+
+    input{
+        flex: 1;
+        background-color: #222;
+        color: #888;
+        font-size: 2vh;
+        text-align: center;
+        font-family: pixeloid;
+        border: 0.5vh solid #4d4d4d;
+        outline: none;
+        height: 4vh;
+        width: 98%;
+        text-align: left;
+    }
+    button{
+        background-color: #272727;
+        color: #009a7c;
+        font-size: 1.8vh;
+        font-family: pixeloid;
+        border: 0.5vh solid #009a7c;
+        outline: none;
+        height: 5vh;
+        width: 40%;
+        align-self: center;
+    }
+    form{
+        margin-top: 5vh;
+        display: flex;
+        flex-direction: column;
+        gap: 2vh;
+    }
+    label{
+        color: #7d7d7d;
+        font-size: 2.5vh;
+    }
+</style>
 </html>

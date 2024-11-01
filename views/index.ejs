@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
-    <title>RoboVM</title>
+    <title>Encryptid'24</title>
     <style>
         ::-webkit-scrollbar {
             width: 0.5vw;
@@ -262,6 +262,7 @@
             font-family: pixeloid;
             border: 0.5vh solid #4d4d4d;
             outline: none;
+            height: 5vh;
         }
         .answer input[type=image] {
             height: 7.5vh;
@@ -344,9 +345,11 @@
         <% } %>
         <% for (let i = 0; i < challenges.length; i++) { %>
             <% if (challenges[i].type == 'ctf') { %>
-            <div class="challengeIcon" style="background-image: url('/<%= challenges[i].type %>.png');" onclick="showChallenge('<%= challenges[i].challengeId %>')">
-                <p><%= challenges[i].title %></p>
-            </div>
+                <% const alreadySolved = challenges[i].solvers.includes(user.name) ? 'solved_' : '' %>
+                <% const clickEvent = alreadySolved ? "" : "showChallenge('" + challenges[i].challengeId + "')" %>
+                <div class="challengeIcon" style="background-image: url('/<%= alreadySolved %><%= challenges[i].type %>.png');" onclick="<%= clickEvent %>">
+                    <p><%= challenges[i].title %></p>
+                </div>
             <% } %>
         <% } %>
     </div>
@@ -357,6 +360,13 @@
         <div class="challengeIcon" style="background-image: url('/leaderboard.png');" onclick="showChallenge('leaderboard')">
             <p>Leaderboard</p>
         </div>
+        <% if (user.admin) { %>
+        <a href="/admin" style="color:#fff; text-decoration: none;">
+            <div class="challengeIcon" style="background-image: url('/profile.png');" >
+                <p>Admin</p>
+            </div>
+        </a>
+        <% } %>
     </div>
     <div class="taskbar">
         <div class="tsLogo">
@@ -454,10 +464,15 @@
                 </div>
             </div>
             <div class="answer">
-                <div>
-                    <input type="text" id="answer" name="answer" placeholder="Enter <%= challenges[i].type == 'cryptic' ? 'Answer' : 'Flag' %>" autocomplete="off" onkeyup="checkAnswer(event, '<%= challenges[i].challengeId %>')">
-                    <input type="image" src="/submit.png" alt="Submit" onclick="checkAnswer(false, '<%= challenges[i].challengeId %>')">
+                <div class="form" style="display: flex; flex-direction: row; justify-content: center; align-items: center; width: 100%;">
+                    <form action="/check/<%= challenges[i].challengeId %>" method="POST">
+                        <input type="text" id="answer" name="answer" placeholder="Enter <%= challenges[i].type == 'cryptic' ? 'Answer' : 'Flag' %>" autocomplete="off">
+                        <button type="submit" style="outline: none; border: none; background: none; ">
+                            <img src="/submit.png" alt="Submit" style="height: 5vh;">
+                        </button>
+                    </form>
                 </div>
+                    <!-- <input type="image" src="/submit.png" alt="Submit" onclick="checkAnswer(false, '')"> -->
             </div>
         </div>
     </div>
@@ -547,6 +562,7 @@
                 })
             }
         }
+
 
         function showChallenge(chall) {
             document.getElementById('challengeContainer_' + chall).style.visibility = 'visible'
