@@ -66,13 +66,6 @@ app.get('/', async(req, res) => {
 app.get('/countdown', ensureAuthenticated, (req, res) => {
     res.render('countdown')
 })
-app.get('/gunfightatcomanchecreek', (req, res) => {
-    res.send(`
-    <body style="background-color: #111">
-        <img src="/image1.png" style="width: 50vw;">
-    </body>
-`)
-})
 app.post('/check/cmd', async (req, res) => {
     if (!req.user) return res.end('no user found')
     const {cmd} = req.body
