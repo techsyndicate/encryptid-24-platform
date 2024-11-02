@@ -54,7 +54,7 @@ app.get('/', async(req, res) => {
         const myUser = req.user
         if (!myUser) return res.redirect('/login')
         if (myUser.banned) return res.redirect('/banned')
-        const allUsers = await User.find().sort({points: 'desc', lastAnswered: 'desc'})
+        const allUsers = await User.find().sort({points: 'desc', lastAnswered: 'asc'})
         const foundChallenges = await Challenge.find().sort({title:1})
         const cryptChallenges = await Challenge.find({type: 'cryptic'}).sort({title:1})
         res.render('index', {challenges: foundChallenges, user: myUser, allUsers})      
@@ -71,6 +71,13 @@ app.get('/gunfightatcomanchecreek', (req, res) => {
     <body style="background-color: #111">
         <img src="/image1.png" style="width: 50vw;">
     </body>
+`)
+})
+app.get('/flash', (req, res) => {
+    res.send(`
+<body style="background-color: #111;">
+    <p style="color: white; font-family: sans-serif">Greek personification of Nemesis and Phthonus was founded in Denny's diner</p>
+</body>
 `)
 })
 app.post('/check/cmd', async (req, res) => {
