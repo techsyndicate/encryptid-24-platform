@@ -421,6 +421,7 @@
                 </div>
                 <div class="challengeBody" style="height: 48vh; overflow: auto; padding: 3vh 2.5vw;">
                     <% for (let i = 0; i < allUsers.length; i++) { %>
+                        <% if (!allUsers[i].admin && !allUsers[i].points == 0) { %>
                         <div class="leaderboardItem">
                             <div class="leaderboardLeft">
                                 <p><%= i + 1 %></p>
@@ -428,6 +429,7 @@
                             </div>
                             <div><%= allUsers[i].points %> gB</div>
                         </div>
+                        <% } %>
                     <% } %>
                 </div>
             </div>
