@@ -344,7 +344,7 @@
                 var clickEvent = ''
                 var bgImage = challenges[i].type
              } else if (user.lockedLevels.includes(challenges[i].challengeId)) {
-                var clickEvent = ''
+                var clickEvent = "showLockedPopup('" + challenges[i].challengeId + "')"
                 var bgImage = 'locked'
              } else {
                 var clickEvent = "showChallenge('" + challenges[i].challengeId + "')"
@@ -358,7 +358,7 @@
         <% for (let i = 0; i < challenges.length; i++) { %>
             <% if (challenges[i].type == 'ctf') { %>
                 <% if (user.lockedLevels.includes('level1cryptic')) { %>
-                    <div class="challengeIcon" style="background-image: url('/locked.png');">
+                    <div class="challengeIcon" style="background-image: url('/locked.png');" onclick="showLockedPopup('<%= challenges[i].challengeId %>')">
                         <p><%= challenges[i].title %></p>
                     </div>
                 <% } else { %>
@@ -508,6 +508,22 @@
                 document.getElementById('timeHours').innerText = myHour
                 document.getElementById('timeMinutes').innerText = myMin
             }, 1000)
+        }
+
+        function showLockedPopup(chall) {
+            switch (chall) {
+                case 'level4cryptic':
+                    notyf.error('Solve levels 1 and 2 to unlock this level!')
+                    break
+                case 'level5cryptic':
+                    notyf.error('Solve levels 3 and 4 to unlock this level!')
+                    break
+                case 'level6cryptic':
+                    notyf.error('Solve levels 4 and 5 to unlock this level!')
+                    break
+                default:
+                    notyf.error('Solve level 0 to unlock this level!')
+            }
         }
 
         // function editDisplayName() {

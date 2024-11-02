@@ -26,7 +26,7 @@ router.post('/', async (req, res) => {
         email: email,
         name: name,
         password: await bcrypt.hash(password, 10),
-        teamName
+        teamName: teamName
      })
      await newUser.save()
      res.redirect('/login')

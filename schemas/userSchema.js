@@ -7,6 +7,11 @@ const userSchema = new Schema({
     name: reqString,
     email: reqString,
     password: reqString,
+    teamName: {
+        type: String,
+        required: true,
+        default: 'indi'
+    },
     proxy: {
         type: String,
         required: true,
