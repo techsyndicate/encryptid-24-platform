@@ -4,16 +4,16 @@ const router = require('express').Router(),
 
 router.post('/:id', async (req, res) => {
     try {
+        const user = req.user
         const {id} = req.params
         const {answer} = req.body
         const foundChallenge = await Challenge.findOne({challengeId: id})
-        const userLogs = req.user.logs 
+        const userLogs = user.logs 
         if (!foundChallenge) return res.json({success: false, message: 'No such challenge!'})
-        if (foundChallenge.solvers.includes(req.user.name)) {
+        if (foundChallenge.solvers.includes(user.name)) {
             return res.json({success: false, message: 'Already answered!'})
         }
         const foundAnswer = foundChallenge.answer
-        console.log(req.body)
         const newDate = new Date()
         if (answer !== foundAnswer) {
             userLogs.push({
@@ -22,7 +22,7 @@ router.post('/:id', async (req, res) => {
                 correct: false,
                 time: newDate.toLocaleString('en-IN', {hour12: false, timeZone: 'Asia/Kolkata'}),
                 unixTime: Number(newDate),
-                user: req.user.name
+                user: user.name
             })
             await User.findByIdAndUpdate(req.user.id, {
                 $set: {
@@ -31,12 +31,34 @@ router.post('/:id', async (req, res) => {
             })
             return res.json({success: false, message: 'Wrong answer!'})
         } else {
-            const points = req.user.points + foundChallenge.points
-            const solves = req.user.solves
+            const points = user.points + foundChallenge.points
+            const solves = user.solves
+            var lockedLevels = user.unlockedLevels
+            const crypticSolves = []
+            for (let m = 0; m < solves.length; m++) {
+                if (solves[m].includes('Level')) {
+                    crypticSolves.push(solves[m])
+                }
+            }
+            if (crypticSolves.length == 5 && foundChallenge.challengeId == 'level5cryptic') {
+                lockedLevels = []
+            }
+            else if ((crypticSolves.includes('Level 3') && foundChallenge.challengeId == 'level4cryptic') || (crypticSolves.includes('Level 4') && foundChallenge.challengeId == 'level3cryptic')) {
+                lockedLevels = ['level6cryptic']
+            }
+            else if ((crypticSolves.includes('Level 1') && foundChallenge.challengeId == 'level2cryptic') || (crypticSolves.includes('Level 2') && foundChallenge.challengeId == 'level1cryptic')) {
+                lockedLevels = ['level5cryptic', 'level6cryptic']
+            }
+            else if (foundChallenge.challengeId == 'level0cryptic') {
+                lockedLevels = ['level4cryptic', 'level5cryptic', 'level6cryptic']
+            }
+            if (user.lockedLevels.includes(foundChallenge.challengeId)) {
+                return res.json({success: false, message: 'This level is locked!'})
+            }
             var challSolves = foundChallenge.solves,
                 challSolvers = foundChallenge.solvers
             challSolves += 1
-            challSolvers.push(req.user.name)
+            challSolvers.push(user.name)
             solves.push(foundChallenge.title)
             userLogs.push({
                 challenge: foundChallenge.title,
@@ -44,14 +66,15 @@ router.post('/:id', async (req, res) => {
                 correct: true,
                 time: newDate.toLocaleString('en-IN', {hour12: false, timeZone: 'Asia/Kolkata'}),
                 unixTime: Number(newDate),
-                user: req.user.name
+                user: user.name
             })
             await User.findByIdAndUpdate(req.user.id, {
                 $set: {
                     logs: userLogs,
                     lastAnswered: Number(newDate),
                     points: points,
-                    solves: solves
+                    solves: solves,
+                    lockedLevels: lockedLevels
                 }
             })
             await Challenge.findByIdAndUpdate(foundChallenge.id, {

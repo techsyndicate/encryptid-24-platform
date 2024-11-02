@@ -50,19 +50,21 @@ app.use(passport.session())
 
 app.get('/', async(req, res) => {
     try {
+        // return res.redirect('/countdown')
         const myUser = req.user
         if (!myUser) return res.redirect('/login')
         if (myUser.banned) return res.redirect('/banned')
         const allUsers = await User.find().sort({points: 'desc', lastAnswered: 'desc'})
         const foundChallenges = await Challenge.find().sort({title:1})
         const cryptChallenges = await Challenge.find({type: 'cryptic'}).sort({title:1})
-        console.log("USER: ", req.user.solves)
-        // console.log("CHALLENGES: ", cryptChallenges)
         res.render('index', {challenges: foundChallenges, user: myUser, allUsers})      
     } catch (error) {
         console.log(error)
         res.end('something went wrong. please try again.')
     }
+})
+app.get('/countdown', ensureAuthenticated, (req, res) => {
+    res.render('countdown')
 })
 app.post('/check/cmd', async (req, res) => {
     if (!req.user) return res.end('no user found')

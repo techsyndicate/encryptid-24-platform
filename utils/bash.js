@@ -10,8 +10,8 @@ const checkCmd = async (cmd, req) => {
     } else if (command[0] == 'echo') {
         const echoCommand = command.join(' ').slice(5)
         return echoCommand
-    } else if (command[0] == 'bhavit') {
-        return 'bhavit hottieieiefwebh'
+    } else if (command[0] == 'pronovarexnishugal') {
+        return 'SHISTECH WINNER LESGOOO'
     } else {
         return `Bash: command "${command[0]}" not found.`
     }

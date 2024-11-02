@@ -336,8 +336,17 @@
         <% for (let i = 0; i < challenges.length; i++) { %>
             <% if (challenges[i].type == 'cryptic') { %>
             <% const alreadySolved = challenges[i].solvers.includes(user.name) ? 'solved_' : '' %>
-            <% const clickEvent = alreadySolved ? "" : "showChallenge('" + challenges[i].challengeId + "')" %>
-            <div class="challengeIcon" style="background-image: url('/<%= alreadySolved %><%= challenges[i].type %>.png');" onclick="<%= clickEvent %>">
+            <% if (alreadySolved) {
+                var clickEvent = ''
+                var bgImage = challenges[i].type
+             } else if (user.lockedLevels.includes(challenges[i].challengeId)) {
+                var clickEvent = ''
+                var bgImage = 'locked'
+             } else {
+                var clickEvent = "showChallenge('" + challenges[i].challengeId + "')"
+                var bgImage = challenges[i].type
+             } %>
+            <div class="challengeIcon" style="background-image: url('/<%= alreadySolved %><%= bgImage %>.png');" onclick="<%= clickEvent %>">
                 <p><%= challenges[i].title %></p>
             </div>
             <% } %>

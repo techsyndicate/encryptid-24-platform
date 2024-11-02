@@ -45,7 +45,7 @@ const userSchema = new Schema({
     lockedLevels: {
         type: Array,
         required: true,
-        default: ['level4cryptic', 'level5cryptic']
+        default: ['level1cryptic', 'level2cryptic', 'level3cryptic', 'level4cryptic', 'level5cryptic', 'level6cryptic']
     }
 })
 
