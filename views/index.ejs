@@ -346,18 +346,24 @@
                 var clickEvent = "showChallenge('" + challenges[i].challengeId + "')"
                 var bgImage = challenges[i].type
              } %>
-            <div class="challengeIcon" style="background-image: url('/<%= alreadySolved %><%= bgImage %>.png');" onclick="<%= clickEvent %>">
+            <div class="challengeIcon" style="background-image: url('/<%= alreadySolved %><%= bgImage %>.png');" onclick="<%- clickEvent %>">
                 <p><%= challenges[i].title %></p>
             </div>
             <% } %>
         <% } %>
         <% for (let i = 0; i < challenges.length; i++) { %>
             <% if (challenges[i].type == 'ctf') { %>
+                <% if (user.lockedLevels.includes('level1cryptic')) { %>
+                    <div class="challengeIcon" style="background-image: url('/locked.png');">
+                        <p><%= challenges[i].title %></p>
+                    </div>
+                <% } else { %>
                 <% const alreadySolved = challenges[i].solvers.includes(user.name) ? 'solved_' : '' %>
                 <% const clickEvent = alreadySolved ? "" : "showChallenge('" + challenges[i].challengeId + "')" %>
                 <div class="challengeIcon" style="background-image: url('/<%= alreadySolved %><%= challenges[i].type %>.png');" onclick="<%= clickEvent %>">
                     <p><%= challenges[i].title %></p>
                 </div>
+                <% } %>
             <% } %>
         <% } %>
     </div>
@@ -448,7 +454,8 @@
         </div>
     </div>
     <% for (let i = 0; i < challenges.length; i++) { %>
-    <% if (!challenges[i].solvers.includes(user.name)) { %>
+    <% if (!challenges[i].solvers.includes(user.name) && !user.lockedLevels.includes(challenges[i].challengeId)) { %>
+        <% if ((user.lockedLevels.includes('level1cryptic') && challenges[i].type !== 'ctf') || !user.lockedLevels.includes('level1cryptic')) { %>
     <div class="kaalaContainer" id="challengeContainer_<%= challenges[i].challengeId %>">
         <div class="challenge" id="challenge_<%= challenges[i].challengeId %>">
             <div>
@@ -479,6 +486,7 @@
             </div>
         </div>
     </div>
+    <% } %>
     <% } %>
     <% } %>
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
