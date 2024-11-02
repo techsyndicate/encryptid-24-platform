@@ -73,10 +73,11 @@ app.get('/gunfightatcomanchecreek', (req, res) => {
     </body>
 `)
 })
-app.get('/flash', (req, res) => {
+
+app.get('/tomahawk', (req, res) => {
     res.send(`
 <body style="background-color: #111;">
-    <p style="color: white; font-family: sans-serif">Greek personification of Nemesis and Phthonus was founded in Denny's diner</p>
+    <p style="color: white; font-family: sans-serif">trust me, beloved hunter, follow the river to find love and other drugs.. yes, it seems unbelievable, but why would i lie? i want to find him where people revolutionize!</p>
 </body>
 `)
 })
