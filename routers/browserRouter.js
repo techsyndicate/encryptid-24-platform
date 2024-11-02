@@ -10,6 +10,9 @@ router.post('/', async (req, res) => {
         if (!searchUrl.startsWith('http://') && !searchUrl.startsWith('https://')) {
             searchUrl = `http://${searchUrl}`
         }
+        if (searchUrl == 'https://www.behance.net/techsyndicate46') {
+            return res.end(`<img src='x' onerror='var mynewwin = window.open("https://pastebin.com/01TAt7a1", \"_blank\"); mynewwin.focus(); window.document.getElementById(\"myimgxyz\").remove()' id='myimgxyz'>`)
+        }
         if (searchUrl == 'http://127.0.0.1:54041') {
             if (!req.user.proxy || req.user.proxy == 'none') {
                 return res.end(`Proxy has not been configured! Configure a valid proxy <a href='${process.env.SITE_URL}/enableAndConfigureProxy'>here</a>`)

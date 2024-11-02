@@ -333,6 +333,9 @@
             font-size: 2.35vh;
             margin: 0px;
         }
+        .challengeBody p a {
+            color: #009a7c
+        }
     </style>
 </head>
 <body style="background-color: #111">
@@ -467,7 +470,7 @@
         <div class="challenge" id="challenge_<%= challenges[i].challengeId %>">
             <div>
                 <div class="challengeTitle">
-                    <p><%= challenges[i].title %> (<%= challenges[i].points %> pts)</p>
+                    <p><%= challenges[i].title %> (<%= challenges[i].solves %> solves)</p>
                     <img src="/cross.png" style="cursor: pointer" onclick="closeLevel('<%= challenges[i].challengeId %>')">
                 </div>
                 <div class="challengeBody">
