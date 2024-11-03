@@ -50,7 +50,7 @@ app.use(passport.session())
 
 app.get('/', async(req, res) => {
     try {
-        return res.redirect('/countdown')
+        return res.redirect('/leaderboard')
         const myUser = req.user
         if (!myUser) return res.redirect('/login')
         if (myUser.banned) return res.redirect('/banned')
@@ -62,6 +62,10 @@ app.get('/', async(req, res) => {
         console.log(error)
         res.end('something went wrong. please try again.')
     }
+})
+app.get('/leaderboard', async (req, res) => {
+    const allUsers = await User.find().sort({points: 'desc', lastAnswered: 'asc'})
+    res.render('leaderboard', {allUsers: allUsers})
 })
 app.get('/countdown', ensureAuthenticated, (req, res) => {
     res.render('countdown')
