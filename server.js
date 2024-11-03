@@ -50,7 +50,7 @@ app.use(passport.session())
 
 app.get('/', async(req, res) => {
     try {
-        // return res.redirect('/countdown')
+        return res.redirect('/countdown')
         const myUser = req.user
         if (!myUser) return res.redirect('/login')
         if (myUser.banned) return res.redirect('/banned')
