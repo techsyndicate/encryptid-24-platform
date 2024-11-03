@@ -9,7 +9,7 @@ router.post('/', async (req, res) => {
     try {
         const {proxy} = req.body
         if (!proxy) return res.end('Proxy not provided!')
-        await User.updateOne({username: req.user.username}, {
+        await User.updateOne({email: req.user.email}, {
             $set: {
                 proxy: proxy
             }
