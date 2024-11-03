@@ -16,6 +16,8 @@ const checkCmd = async (cmd, req) => {
         return 'TSTST TTSTT STTST STTST TTSSS TTSTT TTSSS STTSS TSSTT STTST TTTTS TTSTT TTSST TSTTT TSSTT.'
     } else if (command[0] == 'themomentoftruth') {
         return "He did mock the mayor of auckland city in his song."
+    } else if (command[0] == 'whoishe') {
+        return "CtHQ6oKsLjw"
     }
     else {
         return `Bash: command "${command[0]}" not found.`

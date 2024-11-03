@@ -81,6 +81,14 @@ app.get('/tomahawk', (req, res) => {
 </body>
 `)
 })
+app.get('/offwego', (req, res) => { 
+    res.send(`
+    <body style="background-color: #111;">
+        <p style="color: white; font-family: sans-serif">bit.ly but made by tim cook</p>
+        <p style="display: none;">XlJPG</p>
+    </body>
+    `)
+})
 app.post('/check/cmd', async (req, res) => {
     if (!req.user) return res.end('no user found')
     const {cmd} = req.body
